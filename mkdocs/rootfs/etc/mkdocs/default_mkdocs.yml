@@ -1,0 +1,90 @@
+site_name: My Documentation
+site_description: Documentation site generated with MkDocs
+site_url: ""
+
+nav:
+  - Home: index.md
+  - About: about.md
+
+theme:
+  name: material
+  palette:
+    - scheme: default
+      primary: blue
+      accent: blue
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - scheme: slate
+      primary: blue
+      accent: blue
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  features:
+    - navigation.tabs
+    - navigation.top
+    - navigation.instant
+    - search.highlight
+    - search.share
+  icon:
+    logo: material/library
+  favicon: assets/icon.png
+
+# Plugins: declare here. For extra plugins, add their Python packages to
+# requirements.txt (in the same folder as mkdocs.yml) and list them below.
+plugins:
+  - search
+  - mermaid2:
+      arguments:
+        theme: base
+  - minify:
+      minify_html: true
+      minify_js: true
+      minify_css: true
+      htmlmin_opts:
+        remove_comments: true
+  - awesome-pages
+  # Example extra plugin (requires adding to requirements.txt):
+  # - macros
+
+markdown_extensions:
+  - admonition
+  - codehilite:
+      guess_lang: false
+  - toc:
+      permalink: true
+  - pymdownx.arithmatex
+  - pymdownx.betterem:
+      smart_enable: all
+  - pymdownx.caret
+  - pymdownx.critic
+  - pymdownx.details
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.inlinehilite
+  - pymdownx.magiclink
+  - pymdownx.mark
+  - pymdownx.smartsymbols
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tilde
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com
+    - icon: fontawesome/brands/twitter
+      link: https://twitter.com
+
+extra_css:
+  - assets/extra.css
+
+extra_javascript:
+  - assets/extra.js

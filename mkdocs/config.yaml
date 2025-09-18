@@ -1,0 +1,36 @@
+# https://developers.home-assistant.io/docs/add-ons/configuration#add-on-config
+name: MkDocs
+version: "1.0.2"
+slug: mkdocs
+description: MkDocs documentation generator with Git and local folder support
+url: "https://github.com/home-assistant/addons"
+arch:
+  - armhf
+  - armv7
+  - aarch64
+  - amd64
+  - i386
+init: false
+ingress: true
+ingress_port: 8080
+map:
+  - type: share
+    read_only: false
+  - type: ssl
+  - type: addons
+  - type: backup
+  - type: media
+  - type: homeassistant_config
+ports:
+  # Direct (non-ingress) access port inside the container. Host mapping configurable in UI.
+  8080/tcp: null
+options:
+  source_type: "local"
+  local_path: "/config/mkdocs"
+  git_url: ""
+  ssh_key_path: "/ssl/mkdocs_ssh_key"
+schema:
+  source_type: "list(local|git)"
+  local_path: "str"
+  git_url: "str?"
+  ssh_key_path: "str?"

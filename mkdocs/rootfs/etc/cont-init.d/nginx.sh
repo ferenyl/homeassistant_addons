@@ -1,0 +1,86 @@
+#!/usr/bin/with-contenv bashio
+# ==============================================================================
+# Setup nginx configuration with dynamic port
+# ==============================================================================
+
+declare ingress_port
+
+# Get the configured ingress port from add-on options (defaults managed by HA)
+ingress_port=$(bashio::addon.ingress_port)
+
+# Generate nginx configuration with the correct port
+cat > /etc/nginx/nginx.conf << EOF
+user root;
+worker_processes auto;
+pid /var/run/nginx.pid;
+
+events {
+    worker_connections 1024;
+    use epoll;
+    multi_accept on;
+}
+
+http {
+    include /etc/nginx/mime.types;
+    default_type application/octet-stream;
+
+    # Logging
+    access_log /proc/1/fd/1;
+    error_log /proc/1/fd/2;
+
+    # Performance
+    sendfile on;
+    tcp_nopush on;
+    tcp_nodelay on;
+    keepalive_timeout 65;
+    types_hash_max_size 2048;
+    server_tokens off;
+
+    # Gzip compression
+    gzip on;
+    gzip_vary on;
+    gzip_comp_level 6;
+    gzip_min_length 1000;
+    gzip_proxied any;
+    gzip_types
+        text/plain
+        text/css
+        text/xml
+        text/javascript
+        application/json
+        application/javascript
+        application/xml+rss
+        application/atom+xml
+        image/svg+xml;
+
+    # Security headers
+    add_header X-Frame-Options SAMEORIGIN always;
+    add_header X-Content-Type-Options nosniff always;
+    add_header X-XSS-Protection "1; mode=block" always;
+    add_header Referrer-Policy strict-origin-when-cross-origin always;
+
+    # Single server for both Ingress and direct access
+    server {
+        listen ${ingress_port} default_server;
+        server_name _;
+
+        root /var/www/html;
+        index index.html;
+
+        location / {
+            try_files \$uri \$uri/ =404;
+            location ~* \.(css|js|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot)$ {
+                expires 30d;
+                add_header Cache-Control "public, immutable";
+            }
+        }
+
+        error_page 404 /404.html;
+        location = /404.html { internal; }
+
+    location /health { access_log off; return 200 "healthy\n"; add_header Content-Type text/plain; }
+    }
+}
+EOF
+
+bashio::log.info "Nginx configuration: single port ${ingress_port} (Ingress + direct)"

@@ -1,0 +1,22 @@
+# Changelog
+
+## [1.0.0] - 2025-09-18
+
+### Added
+- Initial release of MkDocs Home Assistant Add-on
+- Support for local folder and Git repository sources
+- Pre-installed plugins: Material theme, Mermaid2, Minify
+- SSH key support for private Git repositories
+- Automatic default configuration and content generation
+- Nginx web server with Home Assistant ingress support
+- Configurable port settings
+- Comprehensive documentation and examples
+
+### Features
+- **Multiple Source Types**: Local folders or Git repositories
+- **Default Templates**: Automatic setup with sensible defaults
+- **Plugin Ecosystem**: Pre-installed popular plugins with extensibility
+- **Security**: SSH key support for private repositories
+- **Performance**: Nginx serving with caching and compression
+- **Integration**: Seamless Home Assistant ingress support
+- **Customization**: Flexible configuration options

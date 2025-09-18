@@ -1,0 +1,20 @@
+#!/bin/bash
+# ==============================================================================
+# MkDocs build helper script
+# ==============================================================================
+
+set -e
+
+cd /tmp/mkdocs/source
+
+# Check if mkdocs.yml exists
+if [[ ! -f "mkdocs.yml" ]]; then
+    echo "Error: mkdocs.yml not found in source directory"
+    exit 1
+fi
+
+# Build the documentation
+echo "Building MkDocs documentation..."
+mkdocs build --site-dir /var/www/html
+
+echo "Documentation built successfully!"

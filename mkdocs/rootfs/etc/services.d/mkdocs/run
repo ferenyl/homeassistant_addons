@@ -1,0 +1,110 @@
+#!/usr/bin/with-contenv bashio
+# ==============================================================================
+# Start the MkDocs service
+# s6-overlay docs: https://github.com/just-containers/s6-overlay
+# ==============================================================================
+
+# Declare variables
+declare source_type
+declare local_path
+declare git_url
+declare ssh_key_path
+declare ingress_port
+
+# Get configuration
+source_type=$(bashio::config 'source_type')
+local_path=$(bashio::config 'local_path')
+git_url=$(bashio::config 'git_url')
+ssh_key_path=$(bashio::config 'ssh_key_path')
+ingress_port=$(bashio::addon.ingress_port)
+
+bashio::log.info "Starting MkDocs service..."
+bashio::log.info "Source type: ${source_type}"
+bashio::log.info "Serving on single port: ${ingress_port} (Ingress + direct)"
+
+# Create working directory
+mkdir -p /tmp/mkdocs/source
+mkdir -p /var/www/html
+
+# Handle source type
+if [[ "${source_type}" == "git" ]]; then
+    bashio::log.info "Using Git source: ${git_url}"
+
+    if [[ -z "${git_url}" ]]; then
+        bashio::exit.nok "Git URL is required when source_type is 'git'"
+    fi
+
+    # Set up SSH if key is provided
+    if [[ -n "${ssh_key_path}" ]] && [[ -f "${ssh_key_path}" ]]; then
+        bashio::log.info "Setting up SSH key..."
+        mkdir -p /root/.ssh
+        cp "${ssh_key_path}" /root/.ssh/id_rsa
+        chmod 600 /root/.ssh/id_rsa
+        ssh-keyscan -H github.com >> /root/.ssh/known_hosts 2>/dev/null || true
+        ssh-keyscan -H gitlab.com >> /root/.ssh/known_hosts 2>/dev/null || true
+        ssh-keyscan -H bitbucket.org >> /root/.ssh/known_hosts 2>/dev/null || true
+    fi
+
+    # Clone or pull repository
+    if [[ -d "/tmp/mkdocs/source/.git" ]]; then
+        bashio::log.info "Updating existing repository..."
+        cd /tmp/mkdocs/source
+        git pull origin main || git pull origin master || bashio::log.warning "Could not pull latest changes"
+    else
+        bashio::log.info "Cloning repository..."
+        git clone "${git_url}" /tmp/mkdocs/source || bashio::exit.nok "Failed to clone repository"
+    fi
+
+elif [[ "${source_type}" == "local" ]]; then
+    bashio::log.info "Using local source: ${local_path}"
+
+    if [[ ! -d "${local_path}" ]]; then
+        bashio::exit.nok "Local path '${local_path}' does not exist"
+    fi
+
+    # Copy local files to working directory
+    cp -r "${local_path}"/* /tmp/mkdocs/source/ 2>/dev/null || true
+    cp -r "${local_path}"/.[^.]* /tmp/mkdocs/source/ 2>/dev/null || true
+
+else
+    bashio::exit.nok "Invalid source_type: ${source_type}. Must be 'git' or 'local'"
+fi
+
+# Check if mkdocs.yml exists, if not copy default
+if [[ ! -f "/tmp/mkdocs/source/mkdocs.yml" ]]; then
+    bashio::log.info "No mkdocs.yml found, using default configuration..."
+    cp /etc/mkdocs/default_mkdocs.yml /tmp/mkdocs/source/mkdocs.yml
+fi
+
+# Check if docs folder exists, if not copy default content
+if [[ ! -d "/tmp/mkdocs/source/docs" ]] || [[ -z "$(ls -A /tmp/mkdocs/source/docs 2>/dev/null)" ]]; then
+    bashio::log.info "No docs content found, using default content..."
+    mkdir -p /tmp/mkdocs/source/docs
+    cp -r /etc/mkdocs/docs/* /tmp/mkdocs/source/docs/ 2>/dev/null || true
+fi
+
+# Check if icon.png exists, if not copy default
+if [[ ! -f "/tmp/mkdocs/source/docs/assets/icon.png" ]]; then
+    bashio::log.info "No icon found, copying default..."
+    mkdir -p /tmp/mkdocs/source/docs/assets
+    cp /etc/mkdocs/default_icon.png /tmp/mkdocs/source/docs/assets/icon.png 2>/dev/null || true
+fi
+
+# Install Python packages from requirements.txt if present
+if [[ -f "/tmp/mkdocs/source/requirements.txt" ]]; then
+    bashio::log.info "Installing Python packages from requirements.txt..."
+    pip3 install -r "/tmp/mkdocs/source/requirements.txt" || bashio::log.warning "Failed to install one or more requirements"
+fi
+
+# Build documentation
+bashio::log.info "Building documentation..."
+cd /tmp/mkdocs/source || bashio::exit.nok "Failed to enter source directory"
+mkdocs build --site-dir /var/www/html || bashio::exit.nok "Failed to build documentation"
+
+# Configure nginx
+bashio::log.info "Configuring nginx..."
+/etc/cont-init.d/nginx.sh
+
+# Start nginx
+bashio::log.info "Starting nginx on port ${ingress_port}..."
+exec nginx -g "daemon off;"
