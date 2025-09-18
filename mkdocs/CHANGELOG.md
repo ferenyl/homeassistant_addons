@@ -1,8 +1,15 @@
 # Changelog
 
+## [1.1.6] - 2025-09-18
+
+### Fixed
+
+- nginx did not start
+
 ## [1.0.0] - 2025-09-18
 
 ### Added
+
 - Initial release of MkDocs Home Assistant Add-on
 - Support for local folder and Git repository sources
 - Pre-installed plugins: Material theme, Mermaid2, Minify
@@ -13,6 +20,7 @@
 - Comprehensive documentation and examples
 
 ### Features
+
 - **Multiple Source Types**: Local folders or Git repositories
 - **Default Templates**: Automatic setup with sensible defaults
 - **Plugin Ecosystem**: Pre-installed popular plugins with extensibility
