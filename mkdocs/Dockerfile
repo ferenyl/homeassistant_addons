@@ -37,12 +37,14 @@ RUN \
 # Copy root filesystem
 COPY rootfs /
 
-# Create necessary directories
+
+# Create necessary directories and remove default nginx configs
 RUN \
     mkdir -p /var/run/nginx \
     && mkdir -p /var/www/html \
     && mkdir -p /tmp/mkdocs \
-    && ln -sf /homeassistant /config
+    && ln -sf /homeassistant /config \
+    && rm -rf /etc/nginx/conf.d/*
 
 # Set permissions
 RUN \
