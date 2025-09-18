@@ -15,8 +15,7 @@ ingress: true
 ingress_port: 8080
 hassio_api: true
 homeassistant_api: true
-services:
-  - "mkdocs:rebuild_docs"
+
 map:
   - type: share
     read_only: false
