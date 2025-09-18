@@ -51,4 +51,19 @@ RUN \
     chmod +x /etc/cont-init.d/10-build-mkdocs \
     && chmod +x /etc/cont-init.d/10-generate-nginx-config \
     && chmod +x /etc/services.d/nginx/run \
-    && chmod +x /etc/services.d/nginx/finish
+    && chmod +x /etc/services.d/nginx/finish \
+    && rm -f -r \
+        /app \
+        /etc/init.d/nginx \
+        /etc/logrotate.d/nginx \
+        /opt/nginx-proxy-manager/node_modules/bcrypt/build \
+        /root/.cache \
+        /root/.node-gyp \
+        /tmp/.[!.]* \
+        /tmp/* \
+        /usr/lib/node_modules \
+        /usr/local/share/.cache \
+        /var/lib/nginx \
+        /var/log/nginx \
+        /var/tmp/nginx \
+        /var/www
