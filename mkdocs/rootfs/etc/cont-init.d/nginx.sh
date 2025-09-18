@@ -25,8 +25,14 @@ http {
     default_type application/octet-stream;
 
     # Logging
-    access_log /proc/1/fd/1;
-    error_log /proc/1/fd/2;
+    access_log /tmp/access.log;
+    error_log /tmp/error.log;
+    client_body_temp_path /tmp/client_body;
+    proxy_temp_path /tmp/proxy;
+    fastcgi_temp_path /tmp/fastcgi;
+    uwsgi_temp_path /tmp/uwsgi;
+    scgi_temp_path /tmp/scgi;
+
 
     # Performance
     sendfile on;

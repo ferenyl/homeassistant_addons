@@ -111,5 +111,5 @@ nginx -g "daemon off;" &
 NGINX_PID=$!
 
 # Start nginx in foreground and monitor
-bashio::log.info "MkDocs service running (rebuild functionality borttagen)"
+bashio::log.info "MkDocs service running"
 wait $NGINX_PID
