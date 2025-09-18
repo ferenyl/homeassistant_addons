@@ -9,8 +9,10 @@ A Home Assistant add-on that generates and serves beautiful documentation using 
 - **MkDocs with Material Theme**: Beautiful, responsive documentation
 - **Plugin Support**: Includes Mermaid2 and Minify plugins with ability to add more
 - **Multiple Source Types**:
+
   - Local Home Assistant folders
   - Git repositories (with SSH key support)
+
 - **Default Configuration**: Provides sensible defaults if no mkdocs.yml exists
 - **Nginx Serving**: Optimized static file serving with caching
 - **Home Assistant Ingress**: Seamless integration with Home Assistant UI
@@ -146,18 +148,6 @@ plugins:
   - awesome-pages
   - macros
 ```
-
-Install plugin packages via `requirements.txt` placed next to your `mkdocs.yml`:
-
-```text
-mkdocs-material
-mkdocs-mermaid2-plugin
-mkdocs-minify-plugin
-mkdocs-awesome-pages-plugin
-mkdocs-macros-plugin
-```
-
-Note: The add-on does not provide a separate plugin install option; manage all plugin packages via `requirements.txt`.
 
 ## Folder Structure
 

@@ -22,9 +22,9 @@ theme:
         icon: material/brightness-4
         name: Switch to light mode
   features:
-    - navigation.tabs
-    - navigation.top
-    - navigation.instant
+    - header.autohide
+    - navigation.sections
+    - toc.integrate
     - search.highlight
     - search.share
   icon:
@@ -49,6 +49,10 @@ plugins:
   # - macros
 
 markdown_extensions:
+  - attr_list
+  - md_in_html
+  - toc:
+      permalink: "#"
   - admonition
   - codehilite:
       guess_lang: false
@@ -75,6 +79,9 @@ markdown_extensions:
   - pymdownx.tasklist:
       custom_checkbox: true
   - pymdownx.tilde
+  - pymdownx.highlight
+  - pymdownx.keys
+  - pymdownx.tabbed
 
 extra:
   social:

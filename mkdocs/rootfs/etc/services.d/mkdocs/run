@@ -107,4 +107,9 @@ bashio::log.info "Configuring nginx..."
 
 # Start nginx
 bashio::log.info "Starting nginx on port ${ingress_port}..."
-exec nginx -g "daemon off;"
+nginx -g "daemon off;" &
+NGINX_PID=$!
+
+# Start nginx in foreground and monitor
+bashio::log.info "MkDocs service running (rebuild functionality borttagen)"
+wait $NGINX_PID
