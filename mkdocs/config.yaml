@@ -28,7 +28,7 @@ map:
   - type: homeassistant_config
 ports:
   # Direct (non-ingress) access port inside the container. Host mapping configurable in UI.
-  8080/tcp:8080
+  8080/tcp: 8080
 options:
   source_type: "local"
   local_path: "/config/mkdocs"
