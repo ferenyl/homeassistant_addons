@@ -1,4 +1,5 @@
 #!/usr/bin/with-contenv bashio
+# shellcheck shell=bash
 # ==============================================================================
 # Setup nginx configuration with dynamic port
 # ==============================================================================
@@ -7,6 +8,14 @@ declare ingress_port
 
 # Get the configured ingress port from add-on options (defaults managed by HA)
 ingress_port=$(bashio::addon.ingress_port)
+
+bashio::log.info "Configure nginx"
+# NGinx needs this file to be able to start.
+# It will not continously log into it.
+mkdir -p /var/lib/nginx/logs
+touch /var/lib/nginx/logs/error.log
+chmod 777 /var/lib/nginx/logs/error.log
+
 
 # Generate nginx configuration with the correct port
 cat > /etc/nginx/nginx.conf << EOF
@@ -89,4 +98,4 @@ http {
 }
 EOF
 
-bashio::log.info "Nginx configuration: single port ${ingress_port} (Ingress + direct)"
+bashio::log.info "Nginx configured"

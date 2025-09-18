@@ -1,4 +1,5 @@
 #!/usr/bin/with-contenv bashio
+# shellcheck shell=bash
 # ==============================================================================
 # Start the MkDocs service
 # s6-overlay docs: https://github.com/just-containers/s6-overlay
@@ -9,18 +10,15 @@ declare source_type
 declare local_path
 declare git_url
 declare ssh_key_path
-declare ingress_port
 
 # Get configuration
 source_type=$(bashio::config 'source_type')
 local_path=$(bashio::config 'local_path')
 git_url=$(bashio::config 'git_url')
 ssh_key_path=$(bashio::config 'ssh_key_path')
-ingress_port=$(bashio::addon.ingress_port)
 
-bashio::log.info "Starting MkDocs service..."
+bashio::log.info "Starting MkDocs build"
 bashio::log.info "Source type: ${source_type}"
-bashio::log.info "Serving on single port: ${ingress_port} (Ingress + direct)"
 
 # Create working directory
 mkdir -p /tmp/mkdocs/source
@@ -101,15 +99,4 @@ bashio::log.info "Building documentation..."
 cd /tmp/mkdocs/source || bashio::exit.nok "Failed to enter source directory"
 mkdocs build --site-dir /var/www/html || bashio::exit.nok "Failed to build documentation"
 
-# Configure nginx
-bashio::log.info "Configuring nginx..."
-/etc/cont-init.d/nginx.sh
-
-# Start nginx
-bashio::log.info "Starting nginx on port ${ingress_port}..."
-nginx -g "daemon off;" &
-NGINX_PID=$!
-
-# Start nginx in foreground and monitor
-bashio::log.info "MkDocs service running"
-wait $NGINX_PID
+bashio::log.info "Documentation built..."

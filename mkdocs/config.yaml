@@ -1,8 +1,8 @@
 # https://developers.home-assistant.io/docs/add-ons/configuration#add-on-config
 name: MkDocs
-version: "1.1.3"
+version: "1.1.4"
 slug: mkdocs
-image: "ghcr.io/ferenyl/{arch}-addon-mkdocs"
+#image: "ghcr.io/ferenyl/{arch}-addon-mkdocs"
 description: MkDocs documentation generator with Git and local folder support
 url: "https://github.com/home-assistant/addons"
 arch:
@@ -15,6 +15,7 @@ init: false
 ingress: true
 ingress_port: 8080
 hassio_api: true
+init: false
 homeassistant_api: true
 
 map:
@@ -27,7 +28,7 @@ map:
   - type: homeassistant_config
 ports:
   # Direct (non-ingress) access port inside the container. Host mapping configurable in UI.
-  8080/tcp: null
+  8080/tcp:8080
 options:
   source_type: "local"
   local_path: "/config/mkdocs"

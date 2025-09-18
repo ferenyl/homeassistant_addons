@@ -48,7 +48,7 @@ RUN \
 
 # Set permissions
 RUN \
-    chmod +x /etc/services.d/mkdocs/run \
-    && chmod +x /etc/services.d/mkdocs/finish \
-    && chmod +x /usr/bin/mkdocs_build \
-    && chmod +x /etc/cont-init.d/nginx.sh
+    chmod +x /etc/cont-init.d/10-build-mkdocs \
+    && chmod +x /etc/cont-init.d/10-generate-nginx-config \
+    && chmod +x /etc/services.d/nginx/run \
+    && chmod +x /etc/services.d/nginx/finish

@@ -1,7 +1,7 @@
 #!/usr/bin/with-contenv bashio
+# shellcheck shell=bash
 # ==============================================================================
-# Finish the MkDocs service
 # s6-overlay docs: https://github.com/just-containers/s6-overlay
 # ==============================================================================
 
-bashio::log.info "MkDocs service stopped"
+bashio::log.info "nginx stopped"
