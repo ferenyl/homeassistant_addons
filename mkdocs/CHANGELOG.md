@@ -4,6 +4,12 @@
 
 ### Fixed
 
+- Change icon
+
+## [1.1.7] - 2025-09-19
+
+### Fixed
+
 - nginx did not start
 
 ## [1.0.0] - 2025-09-18
