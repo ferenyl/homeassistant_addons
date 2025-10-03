@@ -8,17 +8,17 @@ ARG TEMPIO_VERSION BUILD_ARCH
 # Install dependencies
 RUN \
     apk add --no-cache \
-        python3 \
-        py3-pip \
-        python3-dev \
-        libffi-dev \
-        openssl-dev \
-        nginx \
-        git \
-        openssh-client \
-        bash \
-        gcc \
-        musl-dev \
+    python3 \
+    py3-pip \
+    python3-dev \
+    libffi-dev \
+    openssl-dev \
+    nginx \
+    git \
+    openssh-client \
+    bash \
+    gcc \
+    musl-dev \
     && \
     curl -sSLf -o /usr/bin/tempio \
     "https://github.com/home-assistant/tempio/releases/download/${TEMPIO_VERSION}/tempio_${BUILD_ARCH}" \
@@ -28,11 +28,10 @@ RUN \
 # Install MkDocs and plugins
 RUN \
     pip3 install --no-cache-dir \
-        mkdocs \
-        mkdocs-mermaid2-plugin \
-        mkdocs-minify-plugin \
-        mkdocs-material \
-        mkdocs-awesome-pages-plugin
+    mkdocs \
+    mkdocs-mermaid2-plugin \
+    mkdocs-minify-plugin \
+    mkdocs-material 
 
 # Copy root filesystem
 COPY rootfs /
@@ -53,17 +52,17 @@ RUN \
     && chmod +x /etc/services.d/nginx/run \
     && chmod +x /etc/services.d/nginx/finish \
     && rm -f -r \
-        /app \
-        /etc/init.d/nginx \
-        /etc/logrotate.d/nginx \
-        /opt/nginx-proxy-manager/node_modules/bcrypt/build \
-        /root/.cache \
-        /root/.node-gyp \
-        /tmp/.[!.]* \
-        /tmp/* \
-        /usr/lib/node_modules \
-        /usr/local/share/.cache \
-        /var/lib/nginx \
-        /var/log/nginx \
-        /var/tmp/nginx \
-        /var/www
+    /app \
+    /etc/init.d/nginx \
+    /etc/logrotate.d/nginx \
+    /opt/nginx-proxy-manager/node_modules/bcrypt/build \
+    /root/.cache \
+    /root/.node-gyp \
+    /tmp/.[!.]* \
+    /tmp/* \
+    /usr/lib/node_modules \
+    /usr/local/share/.cache \
+    /var/lib/nginx \
+    /var/log/nginx \
+    /var/tmp/nginx \
+    /var/www

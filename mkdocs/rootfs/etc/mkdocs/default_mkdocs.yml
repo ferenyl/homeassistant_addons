@@ -17,7 +17,7 @@ theme:
 
     # Palette toggle for light mode
     - media: "(prefers-color-scheme: light)"
-      scheme: default 
+      scheme: default
       toggle:
         icon: material/brightness-7
         name: Switch to dark mode
@@ -32,7 +32,7 @@ theme:
     - header.autohide
     - navigation.sections
     - navigation.path
-    - toc.integrate
+    - toc.follow
     - search.highlight
     - search.share
   icon:
@@ -52,7 +52,6 @@ plugins:
       minify_css: true
       htmlmin_opts:
         remove_comments: true
-  - awesome-pages
   # Example extra plugin (requires adding to requirements.txt):
   # - macros
 
