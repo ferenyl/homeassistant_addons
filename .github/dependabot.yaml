@@ -5,3 +5,17 @@ updates:
     schedule:
       interval: weekly
       time: "06:00"
+    open-pull-requests-limit: 5
+    labels:
+      - "dependencies"
+      - "github-actions"
+
+  - package-ecosystem: "docker"
+    directory: "/mkdocs"
+    schedule:
+      interval: weekly
+      time: "06:00"
+    open-pull-requests-limit: 5
+    labels:
+      - "dependencies"
+      - "docker"

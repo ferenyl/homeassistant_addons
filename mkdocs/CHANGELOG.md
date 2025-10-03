@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.1.7] - 2025-10-1
+
+### Added
+- Material theme now displays light or dark theme based on OS settings 
+
 ## [1.1.6] - 2025-09-18
 
 ### Fixed
