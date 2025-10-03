@@ -26,12 +26,14 @@ RUN \
     chmod a+x /usr/bin/tempio
 
 # Install MkDocs and plugins
+RUN pip3 install --upgrade pip setuptools
 RUN \
     pip3 install --no-cache-dir \
     mkdocs \
     mkdocs-mermaid2-plugin \
     mkdocs-minify-plugin \
-    mkdocs-material 
+    mkdocs-material \
+    mkdocs-awesome-pages-plugin
 
 # Copy root filesystem
 COPY rootfs /
