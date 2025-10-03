@@ -11,3 +11,6 @@ configuration:
   ssh_key_path:
     name: SSH Key Path
     description: Path to SSH private key for Git access
+  enable_api:
+    name: Enable API
+    description: Enable HTTP API for automation integration (port 8081)

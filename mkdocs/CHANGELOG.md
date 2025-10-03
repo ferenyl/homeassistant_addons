@@ -1,5 +1,22 @@
 # Changelog
 
+## [1.2.0] - 2025-10-3
+
+### Added
+- **HTTP API for Automation Integration**: Built-in API server on port 8081
+- **RESTful Commands**: Easy integration with Home Assistant automations and scripts
+- **Webhook Support**: Direct webhook endpoint for Git repository integration
+- **Home Assistant Examples**: Complete configuration examples for automations and scripts
+- **Node-RED Integration**: Pre-built flow examples for Node-RED users
+- **API Status Monitoring**: Health check and status endpoints
+- **Background Rebuild Process**: Non-blocking documentation rebuilds
+- **Comprehensive Documentation**: Webhook setup guides and security recommendations
+
+### Changed
+- Improved logging with timestamp and structured output
+- Enhanced error handling in rebuild process
+- API can be disabled via configuration if not needed
+
 ## [1.1.7] - 2025-10-1
 
 ### Added
