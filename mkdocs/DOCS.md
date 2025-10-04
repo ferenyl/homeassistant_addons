@@ -10,7 +10,7 @@ Use this option when your documentation files are stored locally in Home Assista
 
 ```yaml
 source_type: "local"
-local_path: "/config/mkdocs"
+local_path: "" (leave this empty for default folder)
 ```
 
 **Setup Steps:**

@@ -24,6 +24,12 @@ bashio::log.info "Source type: ${source_type}"
 mkdir -p /tmp/mkdocs/source
 mkdir -p /var/www/html
 
+# Set default local_path if it is empty
+if [[ -z "${local_path}" ]]; then
+    local_path="/addon_config/"
+    bashio::log.info "Local path is empty, using default: ${local_path}"
+fi
+
 # Handle source type
 if [[ "${source_type}" == "git" ]]; then
     bashio::log.info "Using Git source: ${git_url}"
@@ -46,7 +52,7 @@ if [[ "${source_type}" == "git" ]]; then
     # Clone or pull repository
     if [[ -d "/tmp/mkdocs/source/.git" ]]; then
         bashio::log.info "Updating existing repository..."
-        cd /tmp/mkdocs/source
+        cd /tmp/mkdocs/source || exit
         git pull origin main || git pull origin master || bashio::log.warning "Could not pull latest changes"
     else
         bashio::log.info "Cloning repository..."
@@ -96,7 +102,7 @@ fi
 
 # Build documentation
 bashio::log.info "Building documentation..."
-cd /tmp/mkdocs/source || bashio::exit.nok "Failed to enter source directory"
+cd /tmp/mkdocs/source || exit
 mkdocs build --site-dir /var/www/html || bashio::exit.nok "Failed to build documentation"
 
 bashio::log.info "Documentation built..."

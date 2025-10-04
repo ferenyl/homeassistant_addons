@@ -24,20 +24,6 @@ sensor:
     scan_interval: 300  # Check every 5 minutes
 
 # Example automation: Rebuild docs when files change
-automation:
-  - alias: "MkDocs Auto Rebuild"
-    description: "Automatically rebuild MkDocs when documentation files change"
-    trigger:
-      - platform: event
-        event_type: folder_watcher
-        event_data:
-          path: "/config/mkdocs"
-    action:
-      - service: rest_command.mkdocs_rebuild
-      - service: notify.persistent_notification
-        data:
-          title: "MkDocs"
-          message: "Documentation rebuild started"
 
 # Example script callable from UI
 script:
@@ -58,19 +44,3 @@ input_boolean:
   mkdocs_auto_rebuild:
     name: "MkDocs Auto Rebuild"
     icon: mdi:auto-fix
-
-# Conditional automation based on input boolean
-automation:
-  - alias: "MkDocs Conditional Auto Rebuild"
-    description: "Conditionally rebuild MkDocs based on toggle"
-    trigger:
-      - platform: event
-        event_type: folder_watcher
-        event_data:
-          path: "/config/mkdocs"
-    condition:
-      - condition: state
-        entity_id: input_boolean.mkdocs_auto_rebuild
-        state: 'on'
-    action:
-      - service: rest_command.mkdocs_rebuild

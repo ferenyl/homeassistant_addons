@@ -32,7 +32,7 @@ A Home Assistant add-on that generates and serves beautiful documentation using 
 
 ```yaml
 source_type: "local"
-local_path: "/config/mkdocs"
+local_path: ""
 ```
 
 ### Git Repository Configuration
@@ -94,7 +94,7 @@ local_path: "/config/mkdocs"
 | Option         | Type   | Default                 | Description                                                                  |
 | -------------- | ------ | ----------------------- | ---------------------------------------------------------------------------- |
 | `source_type`  | string | `"local"`               | Source type: `"local"` or `"git"`                                            |
-| `local_path`   | string | `"/config/mkdocs"`      | Path to local documentation folder                                           |
+| `local_path`   | string | `""`                    | Path to local documentation folder                                           |
 | `git_url`      | string | `""`                    | Git repository URL (required if source_type is "git")                        |
 | `ssh_key_path` | string | `"/ssl/mkdocs_ssh_key"` | Path to SSH private key for Git access                                       |
 | `enable_api`   | bool   | `true`                  | Enable HTTP API for automation integration                                   |

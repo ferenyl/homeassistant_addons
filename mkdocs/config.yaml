@@ -1,8 +1,8 @@
 # https://developers.home-assistant.io/docs/add-ons/configuration#add-on-config
 name: MkDocs
-version: "1.2.0"
+version: "1.2.2"
 slug: mkdocs
-image: "ghcr.io/ferenyl/{arch}-addon-mkdocs"
+# image: "ghcr.io/ferenyl/{arch}-addon-mkdocs"
 description: MkDocs documentation generator with Git and local folder support
 url: "https://github.com/home-assistant/addons"
 panel_icon: mdi:library
@@ -22,7 +22,8 @@ map:
   - type: share
     read_only: false
   - type: ssl
-  - type: addons
+  - type: addon_config
+    read_only: false
   - type: backup
   - type: media
   - type: homeassistant_config
@@ -33,12 +34,7 @@ ports:
   8081/tcp: null
 options:
   source_type: "local"
-  local_path: "/config/mkdocs"
-  git_url: ""
-  ssh_key_path: "/ssl/mkdocs_ssh_key"
-options:
-  source_type: "local"
-  local_path: "/config/mkdocs"
+  local_path: ""
   git_url: ""
   ssh_key_path: "/ssl/mkdocs_ssh_key"
   enable_api: true
