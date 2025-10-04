@@ -1,7 +1,0 @@
-#!/usr/bin/with-contenv bashio
-# shellcheck shell=bash
-# ==============================================================================
-# MkDocs API service finish script
-# ==============================================================================
-
-bashio::log.info "MkDocs API service stopped"
