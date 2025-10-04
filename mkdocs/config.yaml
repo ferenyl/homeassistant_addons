@@ -2,7 +2,7 @@
 name: MkDocs
 version: "1.3.0"
 slug: mkdocs
-# image: "ghcr.io/ferenyl/{arch}-addon-mkdocs"
+image: "ghcr.io/ferenyl/{arch}-addon-mkdocs"
 description: MkDocs documentation generator with Git and local folder support
 url: "https://github.com/home-assistant/addons"
 panel_icon: mdi:library
