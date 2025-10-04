@@ -97,5 +97,4 @@ http {
     }
 }
 EOF
-
 bashio::log.info "Nginx configured"

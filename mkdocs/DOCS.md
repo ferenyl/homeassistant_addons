@@ -10,7 +10,7 @@ Use this option when your documentation files are stored locally in Home Assista
 
 ```yaml
 source_type: "local"
-local_path: "/config/mkdocs"
+local_path: "" (leave this empty for default folder)
 ```
 
 **Setup Steps:**
@@ -59,8 +59,9 @@ ssh_key_path: "/ssl/mkdocs_ssh_key"
 
 ### Ports and Access
 
-- Ingress: Served via Home Assistant ingress on the add-on's configured ingress port (default 8000). This is automatic.
-- Direct access: Exposed on container port 8080. Map `8080/tcp` to a host port in the add-on UI to access without ingress, e.g., `http://<ha-host>:<host-port>`.
+- **Ingress**: Served via Home Assistant ingress on the add-on's configured ingress port (default 8000). This is automatic.
+- **Direct access**: Exposed on container port 8080. Map `8080/tcp` to a host port in the add-on UI to access without ingress, e.g., `http://<ha-host>:<host-port>`.
+- **API Access**: HTTP API available on port 8081 for automation integration. Map `8081/tcp` to a host port if needed.
 
 ### SSH Keys
 
@@ -275,6 +276,78 @@ mkdocs-awesome-pages-plugin
 ```
 
 The add-on automatically installs `requirements.txt` before building. Manage all plugin packages via `requirements.txt`.
+
+## Automation Integration
+
+The add-on includes a built-in HTTP API for triggering documentation rebuilds from Home Assistant automations and scripts.
+
+### API Configuration
+
+Enable the API in your add-on configuration:
+
+```yaml
+enable_api: true
+```
+
+The API runs on port 8081 and provides these endpoints:
+
+- `POST /rebuild` - Trigger documentation rebuild
+- `POST /webhook` - Webhook endpoint (same as rebuild)
+- `GET /status` - Check API status
+- `GET /health` - Health check
+
+### Home Assistant Integration
+
+Add to your `configuration.yaml`:
+
+```yaml
+rest_command:
+  mkdocs_rebuild:
+    url: "http://localhost:8081/rebuild"
+    method: POST
+    headers:
+      Content-Type: "application/json"
+    payload: '{}'
+    timeout: 30
+
+script:
+  rebuild_mkdocs:
+    alias: "Rebuild MkDocs Documentation"
+    icon: mdi:book-refresh
+    sequence:
+      - service: rest_command.mkdocs_rebuild
+```
+
+### Usage in Scripts and Automations
+
+**Manual Script (callable from UI):**
+1. Create a script in Home Assistant UI
+2. Add action: Call service `rest_command.mkdocs_rebuild`
+3. The script will appear in your Scripts dashboard
+
+**Automation Example:**
+```yaml
+automation:
+  - alias: "Daily docs rebuild"
+    trigger:
+      - platform: time
+        at: "02:00:00"
+    action:
+      - service: rest_command.mkdocs_rebuild
+```
+
+### External Integration
+
+**From curl:**
+```bash
+curl -X POST http://homeassistant:8081/rebuild
+```
+
+**From Node-RED:**
+Use an HTTP request node with POST method to `http://localhost:8081/rebuild`
+
+**Webhook Integration:**
+Configure your Git repository to send webhooks to `http://homeassistant:8081/webhook` on push events.
 
 ## Support
 
