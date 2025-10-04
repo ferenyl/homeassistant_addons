@@ -45,7 +45,6 @@ RUN \
   mkdir -p /var/run/nginx \
   && mkdir -p /var/www/html \
   && mkdir -p /tmp/mkdocs \
-  && ln -sf /homeassistant /config \
   && rm -rf /etc/nginx/conf.d/*
 
 # Set permissions
@@ -54,11 +53,6 @@ RUN \
   && chmod +x /etc/cont-init.d/10-generate-nginx-config \
   && chmod +x /etc/services.d/nginx/run \
   && chmod +x /etc/services.d/nginx/finish \
-  && chmod +x /etc/services.d/mkdocs-api/run \
-  && chmod +x /etc/services.d/mkdocs-api/finish \
-  && chmod +x /usr/bin/mkdocs-rebuild \
-  && chmod +x /usr/bin/mkdocs-api-server \
-  && chmod +x /usr/bin/mkdocs-api-server.py \
   && rm -f -r \
   /app \
   /etc/init.d/nginx \

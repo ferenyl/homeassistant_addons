@@ -24,9 +24,38 @@ bashio::log.info "Source type: ${source_type}"
 mkdir -p /tmp/mkdocs/source
 mkdir -p /var/www/html
 
+# Function: seed default mkdocs files into a target directory if missing
+seed_defaults() {
+    local target_dir
+    target_dir="$1"
+
+    # Ensure target directory exists
+    mkdir -p "${target_dir}"
+
+    # mkdocs.yml
+    if [[ ! -f "${target_dir}/mkdocs.yml" ]]; then
+        bashio::log.info "Seeding default mkdocs.yml to ${target_dir}..."
+        cp /etc/mkdocs/default_mkdocs.yml "${target_dir}/mkdocs.yml" 2>/dev/null || true
+    fi
+
+    # docs content
+    if [[ ! -d "${target_dir}/docs" ]] || [[ -z "$(ls -A "${target_dir}/docs" 2>/dev/null)" ]]; then
+        bashio::log.info "Seeding default docs content to ${target_dir}/docs..."
+        mkdir -p "${target_dir}/docs"
+        cp -r /etc/mkdocs/docs/* "${target_dir}/docs/" 2>/dev/null || true
+    fi
+
+    # icon
+    if [[ ! -f "${target_dir}/docs/assets/icon.png" ]]; then
+        bashio::log.info "Seeding default icon to ${target_dir}/docs/assets/icon.png..."
+        mkdir -p "${target_dir}/docs/assets"
+        cp /etc/mkdocs/default_icon.png "${target_dir}/docs/assets/icon.png" 2>/dev/null || true
+    fi
+}
+
 # Set default local_path if it is empty
 if [[ -z "${local_path}" ]]; then
-    local_path="/addon_config/"
+    local_path="/addon_config"
     bashio::log.info "Local path is empty, using default: ${local_path}"
 fi
 
@@ -59,12 +88,20 @@ if [[ "${source_type}" == "git" ]]; then
         git clone "${git_url}" /tmp/mkdocs/source || bashio::exit.nok "Failed to clone repository"
     fi
 
+    # For git sources, seed defaults into the working directory after clone/pull
+    seed_defaults "/tmp/mkdocs/source"
+    seed_defaults "${local_path}"
+
 elif [[ "${source_type}" == "local" ]]; then
     bashio::log.info "Using local source: ${local_path}"
 
     if [[ ! -d "${local_path}" ]]; then
-        bashio::exit.nok "Local path '${local_path}' does not exist"
+        bashio::log.info "Local path '${local_path}' does not exist. Creating it now"
+        mkdir -p "${local_path}"
     fi
+
+    # Seed defaults into the local path before copying to the working directory
+    seed_defaults "${local_path}"
 
     # Copy local files to working directory
     cp -r "${local_path}"/* /tmp/mkdocs/source/ 2>/dev/null || true
@@ -72,26 +109,6 @@ elif [[ "${source_type}" == "local" ]]; then
 
 else
     bashio::exit.nok "Invalid source_type: ${source_type}. Must be 'git' or 'local'"
-fi
-
-# Check if mkdocs.yml exists, if not copy default
-if [[ ! -f "/tmp/mkdocs/source/mkdocs.yml" ]]; then
-    bashio::log.info "No mkdocs.yml found, using default configuration..."
-    cp /etc/mkdocs/default_mkdocs.yml /tmp/mkdocs/source/mkdocs.yml
-fi
-
-# Check if docs folder exists, if not copy default content
-if [[ ! -d "/tmp/mkdocs/source/docs" ]] || [[ -z "$(ls -A /tmp/mkdocs/source/docs 2>/dev/null)" ]]; then
-    bashio::log.info "No docs content found, using default content..."
-    mkdir -p /tmp/mkdocs/source/docs
-    cp -r /etc/mkdocs/docs/* /tmp/mkdocs/source/docs/ 2>/dev/null || true
-fi
-
-# Check if icon.png exists, if not copy default
-if [[ ! -f "/tmp/mkdocs/source/docs/assets/icon.png" ]]; then
-    bashio::log.info "No icon found, copying default..."
-    mkdir -p /tmp/mkdocs/source/docs/assets
-    cp /etc/mkdocs/default_icon.png /tmp/mkdocs/source/docs/assets/icon.png 2>/dev/null || true
 fi
 
 # Install Python packages from requirements.txt if present

@@ -1,15 +1,10 @@
 # Changelog
 
-## [1.2.0] - 2025-10-3
+## [1.3.0] - 2025-10-3
 
 ### Added
-- **HTTP API for Automation Integration**: Built-in API server on port 8081
-- **RESTful Commands**: Easy integration with Home Assistant automations and scripts
-- **Webhook Support**: Direct webhook endpoint for Git repository integration
-- **Home Assistant Examples**: Complete configuration examples for automations and scripts
-- **Node-RED Integration**: Pre-built flow examples for Node-RED users
-- **API Status Monitoring**: Health check and status endpoints
-- **Background Rebuild Process**: Non-blocking documentation rebuilds
+- **Default MkDocs config**: Added some changes to default
+- **Make default files available**: Copy files to folder so that users can edit them
 
 ### Changed
 - Improved logging with timestamp and structured output
