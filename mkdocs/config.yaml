@@ -1,5 +1,5 @@
 name: MkDocs
-version: "1.3.0"
+version: "1.3.1"
 slug: mkdocs
 image: "ghcr.io/ferenyl/{arch}-addon-mkdocs"
 description: MkDocs documentation generator with Git and local folder support
@@ -16,7 +16,6 @@ ingress: true
 ingress_port: 8080
 hassio_api: true
 homeassistant_api: true
-host_network: true
 
 map:
   - type: ssl
