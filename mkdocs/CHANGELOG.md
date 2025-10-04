@@ -1,10 +1,11 @@
 # Changelog
 
-## [1.3.1] - 2025-10-5
+## [1.3.2] - 2025-10-5
 
 ### Fixed
 
 - **Removed setting from config**: failed to start fixed
+- **Removed script**: failed to start fixed
 
 ## [1.3.0] - 2025-10-3
 
