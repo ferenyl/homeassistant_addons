@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.3.1] - 2025-10-5
+
+### Fixed
+
+- **Removed setting from config**: failed to start fixed
+
 ## [1.3.0] - 2025-10-3
 
 ### Added
@@ -11,7 +17,6 @@
 
 - Improved logging with timestamp and structured output
 - Enhanced error handling in rebuild process
-- API can be disabled via configuration if not needed
 
 ## [1.1.7] - 2025-10-1
 
