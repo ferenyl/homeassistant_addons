@@ -3,10 +3,12 @@
 ## [1.3.0] - 2025-10-3
 
 ### Added
+
 - **Default MkDocs config**: Added some changes to default
 - **Make default files available**: Copy files to folder so that users can edit them
 
 ### Changed
+
 - Improved logging with timestamp and structured output
 - Enhanced error handling in rebuild process
 - API can be disabled via configuration if not needed
@@ -14,6 +16,7 @@
 ## [1.1.7] - 2025-10-1
 
 ### Added
+
 - Material theme now displays light or dark theme based on OS settings
 
 ## [1.1.6] - 2025-09-18
