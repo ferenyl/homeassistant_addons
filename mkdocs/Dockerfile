@@ -30,7 +30,7 @@ RUN \
 RUN pip3 install --upgrade pip setuptools
 RUN \
   pip3 install --no-cache-dir \
-  mkdocs \
+  mkdocs==1.6.1 \
   mkdocs-mermaid2-plugin \
   mkdocs-minify-plugin \
   mkdocs-material \
@@ -53,6 +53,9 @@ RUN \
   && chmod +x /etc/cont-init.d/10-generate-nginx-config \
   && chmod +x /etc/services.d/nginx/run \
   && chmod +x /etc/services.d/nginx/finish \
+  && chmod +x /etc/services.d/rebuild-api/run \
+  && chmod +x /etc/services.d/rebuild-api/finish \
+  && chmod +x /usr/local/bin/rebuild_api_server.py \
   && rm -f -r \
   /app \
   /etc/init.d/nginx \

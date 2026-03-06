@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.3.5] - 2026-03-06
+
+### Added
+
+- New `rebuild-api` s6 service with a Python HTTP server on container port `8081`
+- Rebuild endpoints: `POST /rebuild`, `POST /webhook`, `GET /status`, `GET /health`
+- API rebuild calls now execute the full `/etc/cont-init.d/10-build-mkdocs` flow
+
+### Changed
+
+- Exposed `8081/tcp` in `config.yaml` ports mapping for configurable host mapping
+
 ## [1.3.2] - 2025-10-5
 
 ### Fixed

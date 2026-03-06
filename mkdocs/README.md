@@ -48,6 +48,7 @@ ssh_key_path: "/ssl/mkdocs_ssh_key"
 - Managed in Supervisor → Add-on → Configuration → Network.
 - Ingress: Handled automatically by Home Assistant using the add-on's internal port.
 - Direct access: Map container port `8080/tcp` to any host port to access without ingress, e.g., `http://<home-assistant-host>:<host-port>`.
+- Rebuild API: Map container port `8081/tcp` to a host port for API access (`/rebuild`, `/status`, `/health`).
 
 ### SSH Keys
 
@@ -97,8 +98,7 @@ local_path: "/config/mkdocs"
 | `local_path`   | string | `""`                    | Path to local documentation folder                                           |
 | `git_url`      | string | `""`                    | Git repository URL (required if source_type is "git")                        |
 | `ssh_key_path` | string | `"/ssl/mkdocs_ssh_key"` | Path to SSH private key for Git access                                       |
-| `enable_api`   | bool   | `true`                  | Enable HTTP API for automation integration                                   |
-| `ports`        | map    | `8080/tcp: null`        | Map container port 8080 to a host port for direct access (set under Network) |
+| `ports`        | map    | `8080/tcp: 8080`, `8081/tcp: 8081` | Map container ports to host ports for direct web UI (8080) and rebuild API (8081) |
 
 ## Usage
 
@@ -202,10 +202,18 @@ The add-on provides a built-in HTTP API for triggering documentation rebuilds fr
 
 Add this to your `configuration.yaml` to enable REST commands:
 
+1. Find the add-on hostname (inside Home Assistant OS):
+
+```bash
+ha addons info <addon_slug> | grep '^hostname:'
+```
+
+2. Use that hostname in your REST command URL:
+
 ```yaml
 rest_command:
   mkdocs_rebuild:
-    url: "http://localhost:8081/rebuild"
+    url: "http://<addon-hostname>:8081/rebuild"
     method: POST
     headers:
       Content-Type: "application/json"
@@ -224,6 +232,8 @@ script:
           title: "MkDocs Rebuild"
           message: "Documentation rebuild started"
 ```
+
+Example from a local dev install where slug is `local_mkdocs`: `http://local-mkdocs:8081/rebuild`
 
 ### Usage Examples
 
@@ -247,13 +257,13 @@ automation:
 
 **Via HTTP (external systems):**
 ```bash
-curl -X POST http://homeassistant:8081/rebuild
+curl -X POST http://<home-assistant-host>:<mapped-port>/rebuild
 ```
 
 **From Node-RED:**
 Use an HTTP request node with:
 - Method: POST
-- URL: `http://localhost:8081/rebuild`
+- URL: `http://<addon-hostname>:8081/rebuild`
 - Payload: `{}`
 
 Complete Node-RED flow examples are available in the `examples/` folder.
