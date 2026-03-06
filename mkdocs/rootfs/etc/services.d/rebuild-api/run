@@ -1,5 +1,5 @@
 #!/usr/bin/with-contenv bashio
 # shellcheck shell=bash
 
-bashio::log.info "Starting MkDocs rebuild API on port 8081"
-exec python3 -u /usr/local/bin/rebuild_api_server.py --port 8081
+bashio::log.info "Starting MkDocs rebuild API on port 8083"
+exec python3 -u /usr/local/bin/rebuild_api_server.py --port 8083

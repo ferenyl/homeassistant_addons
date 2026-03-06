@@ -155,7 +155,7 @@ class RebuildHandler(BaseHTTPRequestHandler):
 def main() -> None:
     parser = argparse.ArgumentParser(description="MkDocs rebuild API server")
     parser.add_argument("--host", default="0.0.0.0")
-    parser.add_argument("--port", type=int, default=8081)
+    parser.add_argument("--port", type=int, default=8083)
     args = parser.parse_args()
 
     controller = RebuildController()
