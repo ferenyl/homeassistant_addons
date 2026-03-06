@@ -9,7 +9,6 @@ A Home Assistant add-on that generates and serves beautiful documentation using 
 - **MkDocs with Material Theme**: Beautiful, responsive documentation
 - **Plugin Support**: Includes Mermaid2 and Minify plugins with ability to add more
 - **Multiple Source Types**:
-
   - Local Home Assistant folders
   - Git repositories (with SSH key support)
 
@@ -48,7 +47,7 @@ ssh_key_path: "/ssl/mkdocs_ssh_key"
 - Managed in Supervisor → Add-on → Configuration → Network.
 - Ingress: Handled automatically by Home Assistant using the add-on's internal port.
 - Direct access: Map container port `8080/tcp` to any host port to access without ingress, e.g., `http://<home-assistant-host>:<host-port>`.
-- Rebuild API: Map container port `8081/tcp` to a host port for API access (`/rebuild`, `/status`, `/health`).
+- Rebuild API: Map container port `8083/tcp` to a host port for API access (`/rebuild`, `/status`, `/health`).
 
 ### SSH Keys
 
@@ -92,13 +91,13 @@ local_path: "/config/mkdocs"
 
 ## Configuration Options
 
-| Option         | Type   | Default                 | Description                                                                  |
-| -------------- | ------ | ----------------------- | ---------------------------------------------------------------------------- |
-| `source_type`  | string | `"local"`               | Source type: `"local"` or `"git"`                                            |
-| `local_path`   | string | `""`                    | Path to local documentation folder                                           |
-| `git_url`      | string | `""`                    | Git repository URL (required if source_type is "git")                        |
-| `ssh_key_path` | string | `"/ssl/mkdocs_ssh_key"` | Path to SSH private key for Git access                                       |
-| `ports`        | map    | `8080/tcp: 8080`, `8081/tcp: 8081` | Map container ports to host ports for direct web UI (8080) and rebuild API (8081) |
+| Option         | Type   | Default                            | Description                                                                       |
+| -------------- | ------ | ---------------------------------- | --------------------------------------------------------------------------------- |
+| `source_type`  | string | `"local"`                          | Source type: `"local"` or `"git"`                                                 |
+| `local_path`   | string | `""`                               | Path to local documentation folder                                                |
+| `git_url`      | string | `""`                               | Git repository URL (required if source_type is "git")                             |
+| `ssh_key_path` | string | `"/ssl/mkdocs_ssh_key"`            | Path to SSH private key for Git access                                            |
+| `ports`        | map    | `8080/tcp: 8080`, `8083/tcp: 8083` | Map container ports to host ports for direct web UI (8080) and rebuild API (8083) |
 
 ## Usage
 
@@ -208,16 +207,16 @@ Add this to your `configuration.yaml` to enable REST commands:
 ha addons info <addon_slug> | grep '^hostname:'
 ```
 
-2. Use that hostname in your REST command URL:
+1. Use that hostname in your REST command URL:
 
 ```yaml
 rest_command:
   mkdocs_rebuild:
-    url: "http://<addon-hostname>:8081/rebuild"
+    url: "http://<addon-hostname>:8083/rebuild"
     method: POST
     headers:
       Content-Type: "application/json"
-    payload: '{}'
+    payload: "{}"
     timeout: 30
 
 script:
@@ -233,16 +232,18 @@ script:
           message: "Documentation rebuild started"
 ```
 
-Example from a local dev install where slug is `local_mkdocs`: `http://local-mkdocs:8081/rebuild`
+Example from a local dev install where slug is `local_mkdocs`: `http://local-mkdocs:8083/rebuild`
 
 ### Usage Examples
 
 **From Home Assistant Script (via UI):**
+
 1. Go to Settings → Automations & Scenes → Scripts
 2. Create a new script with the `rest_command.mkdocs_rebuild` service call
 3. Run the script manually or trigger it from automations
 
 **From Automation:**
+
 ```yaml
 automation:
   - alias: "Rebuild docs on file change"
@@ -256,14 +257,16 @@ automation:
 ```
 
 **Via HTTP (external systems):**
+
 ```bash
 curl -X POST http://<home-assistant-host>:<mapped-port>/rebuild
 ```
 
 **From Node-RED:**
 Use an HTTP request node with:
+
 - Method: POST
-- URL: `http://<addon-hostname>:8081/rebuild`
+- URL: `http://<addon-hostname>:8083/rebuild`
 - Payload: `{}`
 
 Complete Node-RED flow examples are available in the `examples/` folder.

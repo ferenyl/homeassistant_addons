@@ -61,7 +61,7 @@ ssh_key_path: "/ssl/mkdocs_ssh_key"
 
 - **Ingress**: Served via Home Assistant ingress on the add-on's configured ingress port (default 8000). This is automatic.
 - **Direct access**: Exposed on container port 8080. Map `8080/tcp` to a host port in the add-on UI to access without ingress, e.g., `http://<ha-host>:<host-port>`.
-- **API Access**: HTTP API available on container port 8081 for automation integration. Map `8081/tcp` to a host port if needed.
+- **API Access**: HTTP API available on container port 8083 for automation integration. Map `8083/tcp` to a host port if needed.
 
 ### SSH Keys
 
@@ -283,7 +283,7 @@ The add-on includes a built-in HTTP API for triggering documentation rebuilds fr
 
 ### API Configuration
 
-The API runs on port 8081 and provides these endpoints:
+The API runs on port 8083 and provides these endpoints:
 
 - `POST /rebuild` - Trigger documentation rebuild
 - `POST /webhook` - Webhook endpoint (same as rebuild)
@@ -300,16 +300,16 @@ Add to your `configuration.yaml`:
 ha addons info <addon_slug> | grep '^hostname:'
 ```
 
-2. Use that hostname in your REST command URL:
+1. Use that hostname in your REST command URL:
 
 ```yaml
 rest_command:
   mkdocs_rebuild:
-    url: "http://<addon-hostname>:8081/rebuild"
+    url: "http://<addon-hostname>:8083/rebuild"
     method: POST
     headers:
       Content-Type: "application/json"
-    payload: '{}'
+    payload: "{}"
     timeout: 30
 
 script:
@@ -320,16 +320,18 @@ script:
       - service: rest_command.mkdocs_rebuild
 ```
 
-    Example from a local dev install where slug is `local_mkdocs`: `http://local-mkdocs:8081/rebuild`
+    Example from a local dev install where slug is `local_mkdocs`: `http://local-mkdocs:8083/rebuild`
 
 ### Usage in Scripts and Automations
 
 **Manual Script (callable from UI):**
+
 1. Create a script in Home Assistant UI
 2. Add action: Call service `rest_command.mkdocs_rebuild`
 3. The script will appear in your Scripts dashboard
 
 **Automation Example:**
+
 ```yaml
 automation:
   - alias: "Daily docs rebuild"
@@ -343,12 +345,13 @@ automation:
 ### External Integration
 
 **From curl:**
+
 ```bash
 curl -X POST http://<home-assistant-host>:<mapped-port>/rebuild
 ```
 
 **From Node-RED:**
-Use an HTTP request node with POST method to `http://<addon-hostname>:8081/rebuild`
+Use an HTTP request node with POST method to `http://<addon-hostname>:8083/rebuild`
 
 **Webhook Integration:**
 Configure your Git repository to send webhooks to `http://<home-assistant-host>:<mapped-port>/webhook` on push events.
