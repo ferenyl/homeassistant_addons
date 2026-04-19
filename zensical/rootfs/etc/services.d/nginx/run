@@ -1,0 +1,16 @@
+#!/usr/bin/with-contenv bashio
+# shellcheck shell=bash
+# ==============================================================================
+# s6-overlay docs: https://github.com/just-containers/s6-overlay
+# ==============================================================================
+
+declare ingress_port
+
+
+ingress_port=$(bashio::addon.ingress_port)
+
+bashio::log.info "Starting nginx port: ${ingress_port} "
+
+
+# Start nginx with the specified config file and run in foreground
+nginx -c /etc/nginx/nginx.conf -g "daemon off;"

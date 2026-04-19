@@ -1,0 +1,42 @@
+name: zensical
+version: "0.0.2"
+slug: zensical
+image: "ghcr.io/ferenyl/{arch}-addon-zensical"
+description: zensical documentation generator with Git and local folder support
+url: "https://github.com/home-assistant/addons"
+panel_icon: mdi:library
+arch:
+  - armhf
+  - armv7
+  - aarch64
+  - amd64
+  - i386
+init: false
+ingress: true
+ingress_port: 8080
+hassio_api: true
+homeassistant_api: true
+
+map:
+  - type: ssl
+  - type: homeassistant_config
+    read_only: false
+    path: "/config"
+  - type: addon_config
+    read_only: false
+    path: /addon_config
+ports:
+  # Direct (non-ingress) access port inside the container. Host mapping configurable in UI.
+  8080/tcp: 8080
+  # Rebuild API port. Map to a host port in the add-on network settings.
+  8083/tcp: 8083
+options:
+  source_type: "local"
+  local_path: ""
+  git_url: ""
+  ssh_key_path: "/ssl/zensical_ssh_key"
+schema:
+  source_type: "list(local|git)"
+  local_path: "str"
+  git_url: "str?"
+  ssh_key_path: "str?"

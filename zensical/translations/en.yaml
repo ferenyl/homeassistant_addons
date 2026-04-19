@@ -1,0 +1,13 @@
+configuration:
+  source_type:
+    name: Source Type
+    description: Choose between local folder or Git repository
+  local_path:
+    name: Local Path
+    description: Path to your documentation folder
+  git_url:
+    name: Git URL
+    description: Git repository URL (SSH format)
+  ssh_key_path:
+    name: SSH Key Path
+    description: Path to SSH private key for Git access

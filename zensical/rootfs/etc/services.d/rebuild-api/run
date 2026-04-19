@@ -1,0 +1,5 @@
+#!/usr/bin/with-contenv bashio
+# shellcheck shell=bash
+
+bashio::log.info "Starting zensical rebuild API"
+exec python3 -u /usr/local/bin/rebuild_api_server.py --port 8084
