@@ -19,6 +19,11 @@ ssh_key_path=$(bashio::config 'ssh_key_path')
 
 bashio::log.info "Starting zensical build"
 bashio::log.info "Source type: ${source_type}"
+bashio::log.info "Runtime PATH: ${PATH}"
+
+if ! command -v zensical >/dev/null 2>&1; then
+    bashio::exit.nok "zensical binary not found in PATH: ${PATH}"
+fi
 
 # Create working directory
 mkdir -p /tmp/zensical/source

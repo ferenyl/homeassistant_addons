@@ -2,6 +2,8 @@
 ARG BUILD_FROM
 FROM $BUILD_FROM
 
+ENV PATH="/root/.local/bin:${PATH}"
+
 # Execute during the build of the image
 ARG TEMPIO_VERSION BUILD_ARCH
 
@@ -31,10 +33,6 @@ RUN pip3 install --upgrade pip setuptools
 RUN \
   pip3 install --no-cache-dir \
   zensical \
-  && if ! command -v zensical >/dev/null 2>&1; then \
-    printf '%s\n' '#!/usr/bin/env sh' 'exec python3 -m zensical "$@"' > /usr/local/bin/zensical; \
-    chmod +x /usr/local/bin/zensical; \
-  fi \
   && command -v zensical >/dev/null 2>&1
 
 # Copy root filesystem
