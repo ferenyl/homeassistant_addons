@@ -47,7 +47,7 @@ ssh_key_path: "/ssl/zensical_ssh_key"
 - Managed in Supervisor → Add-on → Configuration → Network.
 - Ingress: Handled automatically by Home Assistant using the add-on's internal port.
 - Direct access: Map container port `8080/tcp` to any host port to access without ingress, e.g., `http://<home-assistant-host>:<host-port>`.
-- Rebuild API: Map container port `8083/tcp` to a host port for API access (`/rebuild`, `/status`, `/health`).
+- Rebuild API: Map container port `8084/tcp` to a host port for API access (`/rebuild`, `/status`, `/health`).
 
 ### SSH Keys
 
@@ -97,7 +97,7 @@ local_path: "/config/zensical"
 | `local_path`   | string | `""`                               | Path to local documentation folder                                                |
 | `git_url`      | string | `""`                               | Git repository URL (required if source_type is "git")                             |
 | `ssh_key_path` | string | `"/ssl/zensical_ssh_key"`            | Path to SSH private key for Git access                                            |
-| `ports`        | map    | `8080/tcp: 8080`, `8083/tcp: 8083` | Map container ports to host ports for direct web UI (8080) and rebuild API (8083) |
+| `ports`        | map    | `8080/tcp: 8080`, `8084/tcp: 8084` | Map container ports to host ports for direct web UI (8080) and rebuild API (8084) |
 
 ## Usage
 
@@ -212,7 +212,7 @@ ha addons info <addon_slug> | grep '^hostname:'
 ```yaml
 rest_command:
   zensical_rebuild:
-    url: "http://<addon-hostname>:8083/rebuild"
+    url: "http://<addon-hostname>:8084/rebuild"
     method: POST
     headers:
       Content-Type: "application/json"
@@ -232,7 +232,7 @@ script:
           message: "Documentation rebuild started"
 ```
 
-Example from a local dev install where slug is `local_zensical`: `http://local-zensical:8083/rebuild`
+Example from a local dev install where slug is `local_zensical`: `http://local-zensical:8084/rebuild`
 
 ### Usage Examples
 
@@ -266,7 +266,7 @@ curl -X POST http://<home-assistant-host>:<mapped-port>/rebuild
 Use an HTTP request node with:
 
 - Method: POST
-- URL: `http://<addon-hostname>:8083/rebuild`
+- URL: `http://<addon-hostname>:8084/rebuild`
 - Payload: `{}`
 
 Complete Node-RED flow examples are available in the `examples/` folder.
