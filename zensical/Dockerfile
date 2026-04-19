@@ -30,7 +30,12 @@ RUN \
 RUN pip3 install --upgrade pip setuptools
 RUN \
   pip3 install --no-cache-dir \
-  zensical
+  zensical \
+  && if ! command -v zensical >/dev/null 2>&1; then \
+    printf '%s\n' '#!/usr/bin/env sh' 'exec python3 -m zensical "$@"' > /usr/local/bin/zensical; \
+    chmod +x /usr/local/bin/zensical; \
+  fi \
+  && command -v zensical >/dev/null 2>&1
 
 # Copy root filesystem
 COPY rootfs /
