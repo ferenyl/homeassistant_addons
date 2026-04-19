@@ -104,6 +104,19 @@ fi
 # Build documentation
 bashio::log.info "Building documentation..."
 cd /tmp/zensical/source || exit
+
+if [[ ! -f "/tmp/zensical/source/zensical.toml" ]]; then
+    bashio::log.info "No zensical.toml found in source. Initializing default project..."
+    zensical new "/tmp/zensical/source"
+fi
+
 zensical build -f /tmp/zensical/source/zensical.toml
-cp -r /tmp/zensical/source/* /var/www/html
+
+if [[ ! -d "/tmp/zensical/source/site" ]]; then
+    bashio::exit.nok "No generated site found at /tmp/zensical/source/site"
+fi
+
+rm -rf /var/www/html/*
+cp -r /tmp/zensical/source/site/* /var/www/html/
+cp -r /tmp/zensical/source/site/.[^.]* /var/www/html/ 2>/dev/null || true
 bashio::log.info "Documentation built..."

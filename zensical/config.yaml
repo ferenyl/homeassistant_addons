@@ -1,5 +1,5 @@
 name: zensical
-version: "0.0.4"
+version: "0.0.5"
 slug: zensical
 image: "ghcr.io/ferenyl/{arch}-addon-zensical"
 description: zensical documentation generator with Git and local folder support

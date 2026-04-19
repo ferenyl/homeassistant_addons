@@ -2,8 +2,6 @@
 ARG BUILD_FROM
 FROM $BUILD_FROM
 
-ENV PATH="/root/.local/bin:${PATH}"
-
 # Execute during the build of the image
 ARG TEMPIO_VERSION BUILD_ARCH
 
@@ -29,12 +27,10 @@ RUN \
   chmod a+x /usr/bin/tempio
 
 # Install zensical and plugins
-RUN pip3 install --upgrade pip setuptools
 RUN \
-  pip3 install --no-cache-dir \
+  pip3 install --no-cache-dir --break-system-packages \
   zensical \
   && command -v zensical >/dev/null 2>&1
-
 # Copy root filesystem
 COPY rootfs /
 
