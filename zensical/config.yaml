@@ -6,11 +6,8 @@ description: zensical documentation generator with Git and local folder support
 url: "https://github.com/home-assistant/addons"
 panel_icon: mdi:library
 arch:
-  - armhf
-  - armv7
   - aarch64
   - amd64
-  - i386
 init: false
 ingress: true
 ingress_port: 8080
