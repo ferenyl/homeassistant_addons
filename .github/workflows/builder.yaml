@@ -115,3 +115,14 @@ jobs:
             --image "${{ steps.check.outputs.image }}" \
             --docker-hub "ghcr.io/${{ github.repository_owner }}" \
             --addon
+
+  build-result:
+    name: Build result
+    runs-on: ubuntu-latest
+    needs: [init, build]
+    if: always()
+    steps:
+      - name: Check build results
+        run: |
+          [[ "${{ needs.init.result }}" == "success" ]] || exit 1
+          [[ "${{ needs.build.result }}" =~ ^(success|skipped)$ ]] || exit 1
