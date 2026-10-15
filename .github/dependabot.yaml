@@ -4,18 +4,48 @@ updates:
     directory: "/"
     schedule:
       interval: weekly
-      time: "06:00"
+      day: wednesday
+      time: "05:00"
+      timezone: Europe/Stockholm
     open-pull-requests-limit: 5
     labels:
       - "dependencies"
       - "github-actions"
+    groups:
+      github-actions:
+        patterns: ["*"]
+      github-actions-security:
+        applies-to: security-updates
+        patterns: ["*"]
 
   - package-ecosystem: "docker"
-    directory: "/mkdocs"
+    directory: "/zensical"
     schedule:
       interval: weekly
-      time: "06:00"
+      day: wednesday
+      time: "05:00"
+      timezone: Europe/Stockholm
     open-pull-requests-limit: 5
     labels:
       - "dependencies"
       - "docker"
+    groups:
+      docker:
+        patterns: ["*"]
+      docker-security:
+        applies-to: security-updates
+        patterns: ["*"]
+
+  - package-ecosystem: "devcontainers"
+    directory: "/"
+    schedule:
+      interval: weekly
+      day: wednesday
+      time: "05:00"
+      timezone: Europe/Stockholm
+    groups:
+      devcontainers:
+        patterns: ["*"]
+      devcontainers-security:
+        applies-to: security-updates
+        patterns: ["*"]
