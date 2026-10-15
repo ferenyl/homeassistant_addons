@@ -14,6 +14,9 @@ updates:
     groups:
       github-actions:
         patterns: ["*"]
+      github-actions-security:
+        applies-to: security-updates
+        patterns: ["*"]
 
   - package-ecosystem: "docker"
     directory: "/zensical"
@@ -29,6 +32,9 @@ updates:
     groups:
       docker:
         patterns: ["*"]
+      docker-security:
+        applies-to: security-updates
+        patterns: ["*"]
 
   - package-ecosystem: "devcontainers"
     directory: "/"
@@ -39,4 +45,7 @@ updates:
       timezone: Europe/Stockholm
     groups:
       devcontainers:
+        patterns: ["*"]
+      devcontainers-security:
+        applies-to: security-updates
         patterns: ["*"]
