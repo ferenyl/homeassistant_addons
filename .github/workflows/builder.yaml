@@ -29,7 +29,7 @@ jobs:
 
       - name: Find add-on directories
         id: addons
-        uses: home-assistant/actions/helpers/find-addons@cd6f3635a740c84d8a14f6121a90068b8ece6bf6 # master
+        uses: home-assistant/actions/helpers/find-addons@86d4564712fa02543c808e3a693dd04f9d3f8361 # master
 
       - name: Get changed add-ons
         id: changed_addons
@@ -75,7 +75,7 @@ jobs:
 
       - name: Get information
         id: info
-        uses: home-assistant/actions/helpers/info@cd6f3635a740c84d8a14f6121a90068b8ece6bf6 # master
+        uses: home-assistant/actions/helpers/info@86d4564712fa02543c808e3a693dd04f9d3f8361 # master
         with:
           path: "./${{ matrix.addon }}"
 
@@ -98,7 +98,7 @@ jobs:
 
       - name: Login to GitHub Container Registry
         if: env.BUILD_ARGS != '--test'
-        uses: docker/login-action@v4.6.0
+        uses: docker/login-action@v4.7.0
         with:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
